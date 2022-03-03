@@ -1,0 +1,22 @@
+def trans(mes):
+    temp=mes.split(' ')
+    if(mes[0]=='a' or mes[0]=='e' or mes[0]=='i' or mes[0]=='u' or mes[0]=='o'):
+        temp[0]+="ri"
+    else:
+        a=temp[0][0]
+        temp[0].pop(0)
+        temp[0].append(a)
+    for i in range(0,len(temp)):
+       temp[i]+='i' *(i+1)
+
+    temp=' '.join(temp)
+    return temp
+    
+    
+    
+
+a="ancient elma armut"
+print("ilk hali: ",a)
+a=trans(a)
+print("son hali: ",a)
+
