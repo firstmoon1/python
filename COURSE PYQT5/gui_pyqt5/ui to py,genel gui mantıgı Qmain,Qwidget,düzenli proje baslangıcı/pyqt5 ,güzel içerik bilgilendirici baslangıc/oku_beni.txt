@@ -1,0 +1,1 @@
+baska file'den icerik kullanma,ui to py Qwindowmain,Qwidget,switch screen
