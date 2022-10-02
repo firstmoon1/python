@@ -1,0 +1,86 @@
+
+import datetime
+import time
+
+import speech_recognition as sr
+import pyttsx3
+import pywhatkit
+import wikipedia
+import sys
+
+listener = sr.Recognizer()
+engine = pyttsx3.init()
+engine.setProperty("rate",125)
+def talk(command):
+    engine.say(command)
+    engine.runAndWait()
+def take_command():
+    try:
+        with sr.Microphone() as source:
+            print("listening")
+            voice=listener.listen(source,phrase_time_limit=5)
+            print("timeout")
+            command=listener.recognize_google(voice) # (voice,language="tr-TR")
+            print("first try: "+command)
+            command=command.lower()
+            if "alexa" in command:
+                command=command.replace("alexa","")
+                print("second try: "+command)
+                talk(command)
+    except:
+        command=""
+    return command
+def run_command():
+    command=take_command()
+    if "play" in command:
+        song=command.replace("play","")
+        print("run_command: "+song)
+        talk("playing"+song)
+        pywhatkit.playonyt(song)# youtubeden arama yapıyor
+    elif "time" in command:
+        time=datetime.datetime.now().strftime("%I:%M %p") # strftime("%H:%M:%S") hour, minute,second
+        print(time)  # am ve pm ile time yapmak istersek strftime("%I:%M %p") veya  24 saat de strftime("%H:%M") hour ve minute
+        talk("current time is "+time)
+    elif "what is" in command:
+        person=command.replace("what is","")
+        info=wikipedia.summary(person)
+        print(info)
+        talk(info)
+    elif "date" in command:
+        dat=command.replace("date","")
+        talk("sorry I have a headache")
+    elif "close" in command:
+        print("close: "+command)
+        sys.exit(0)
+
+    else:
+        talk("say it again please.")
+while(True):
+    run_command()
+    time.sleep(5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

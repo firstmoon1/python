@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+    <h3>Kontrol paneli</h3>
+    <hr>
+    <p>
+        Hosgeldiniz, <small> {{request.user.username}}</small>
+    </p>
+    <hr> 
+    <!-- <a href="/articles/addarticle" class="btn btn-danger">Makale ekle</a> -->
+        <a href="{% url 'app4:name_addarticle' %}" class="btn btn-danger">Makale ekle</a>
+    <hr>
+
+    {% if article %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Baslık</th>
+                <th scope="col">Yazar</th>
+                <th scope="col">Tarih</th>
+                <th scope="col">Guncelle</th>
+                <th scope="col">Sil</th>
+            </tr>
+            </thead>
+            <tbody>
+
+                {% for item in article %}
+                    <tr>
+                        <th scope="row">{{item.id}}</th>
+                        <td>  <a href="/app_4/detail/{{item.id}}">{{item.title}} </a>  </td> 
+                        <td>{{item.author}}</td>
+                        <td>{{item.created_date}}</td>  
+                        <!-- <td> <a href="/articles/uptade/{{item.id}}" class="btn btn-primary" >Guncelle</a> </td>
+                        <td> <a href="/articles/delete/{{item.id}}" class="btn btn-primary">Sil</a> </td>-->
+                        
+                        
+                        <td> <a href="{% url 'app4:name_updatearticle'   item.id  %}" class="btn btn-primary" >Guncelle</a> </td>
+                        <td> <a href="{% url 'app4:name_deletearticle'  item.id  %}" class="btn btn-primary">Sil</a> 
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-danger">böyle bir makaleniz bulunmuyor.</div>
+    {% endif %}
+
+
+    
+
+{% endblock %}
+
+<!--  
+    item.author : yazarımızın bilgilerini alır, item.author.username de models.py deki olusturdugumuz tablo nun featuredir
+
+
+-->

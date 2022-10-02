@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+    
+
+    <p>Update page</p>
+
+    <form method="post"  enctype="multipart/form-data">
+        {% csrf_token %}
+        <label >author : </label> <br>
+        <input type="text" name="author3"> <br>
+        <label >title : </label> <br>
+        <input type="text" name="title3"> <br>
+        <label >content : </label> <br>
+        <input type="text" name="content3"> <br>
+        <label >file : </label> <br>
+        <input type="file" name="file3"> <br> <br>
+        <button type="submit" class="alert alert-danger">Blog uptade</button>
+    </form>
+
+
+
+
+
+
+
+{% endblock %}

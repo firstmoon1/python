@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    
+    <h3>Personal page</h3> <hr>
+    <form class="row g-3 needs-validation" method="post">
+        {% csrf_token %}
+        <div class="col-md-3">
+            <label >Name:</label>
+            <input type="text" name="name_form" class="form-control" placeholder="Name">
+        </div>
+        <div class="col-md-2">
+            <label >Age:</label>
+            <input type="text"  name="age_form" class="form-control" placeholder="Age">
+        </div>
+        <div class="col-md-3">
+            <label >Gender:</label>
+            <input type="text"  name="gender_form" class="form-control" placeholder="Gender">
+        </div>
+       <div class="col-md-3" style="margin-top: 40px;">
+            <button type="submit" class="btn btn-danger">Add</button>
+       </div>
+    </form>
+    <br><br>
+
+    {% if datas %}
+        
+            <div class="col-md-10">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Gender</th>
+                    </tr>
+                    </thead>
+                    {% for data in datas  %}
+                        <tbody> 
+                        <tr>
+                            <td scope="row">{{data.id}}</td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.age}}</td>
+                            <td>{{data.gender}}</td>
+                            <td> <a href="{% url 'app2:name_update' data.id %}" class="btn btn-primary">Guncelle</a> </td>
+                            <td> <a href="{% url 'app2:name_delete' data.id %}" class="btn btn-danger">Sil</a> </td>    
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        
+
+    {% else %}
+        <p class="btn btn-danger">No worker is there</p>
+    {% endif %}
+
+
+{% endblock %}

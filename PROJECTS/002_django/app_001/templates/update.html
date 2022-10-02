@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h3>Update page</h3> <hr>
+
+<form  class="row g-3 needs-validation" method="post">
+    {% csrf_token %}
+    <div class="col-md-3">
+        <label >Name:</label>
+        <input type="text" name="name1_form" class="form-control" placeholder="new name">
+    </div>
+    <div class="col-md-2">
+        <label >Age:</label>
+        <input type="text"  name="age1_form" class="form-control"  placeholder="new age">
+    </div>
+    <div class="col-md-3">
+        <label >Gender:</label>
+        <input type="text"  name="gender1_form" class="form-control"  placeholder="new gender">
+    </div>
+   <div class="col-md-3" style="margin-top: 40px;">
+        <button type="submit" class="btn btn-danger">Update</button>
+   </div>
+</form>
+
+
+{% endblock %}

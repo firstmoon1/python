@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+
+
+
+
+{% block body %}
+    
+<div class="row"> 
+    <div class="col-lg-8">
+        <!-- title -->
+        <h1 class="mt-4">{{artic.title}}</h1>
+        <!-- author-->
+        <hr>
+        <p class="lead">
+        {{artic.author}} tarafından yayınlandı
+        </p>
+        <hr>
+        <p> {{artic.created_date}} </p>
+        <hr>
+        <!-- image part -->
+        {% if artic.files %}
+            <img class="img-fluid rounded" src="{{artic.files.url}}" alt=""> 
+        
+        {% else %}
+            <p>no images</p>
+        {% endif %}
+        <hr>
+        <p class="lead">{{artic.content}}</p>
+        <!-- <p class="lead">{{artic.content|safe}}</p> --> <!-- |safe bize text olarak gösterir html komutlu halini vermez  -->
+        <hr>
+
+    </div>
+</div>
+
+{% endblock %}

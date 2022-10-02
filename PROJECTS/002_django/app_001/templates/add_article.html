@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+    
+
+    <p>Add article page</p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label >author : </label> <br>
+        <input type="text" name="author2"> <br>
+        <label >title : </label> <br>
+        <input type="text" name="title2"> <br>
+        <label >content : </label> <br>
+        <input type="text" name="content2"> <br>
+        <label >file : </label> <br>
+        <input type="file" name="file2"> <br> <br>
+        <button type="submit" class="alert alert-danger">Blog add</button>
+    </form>
+
+
+
+
+{% endblock %}
