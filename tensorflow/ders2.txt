@@ -1,0 +1,144 @@
+
+# 2.jpg
+import tensorflow as tf
+import random
+import matplotlib.pyplot as plt
+ 
+# cifar-10 populer bir veri seti
+# toplamda 60 bin adet resim var 10 sınıfa ait
+cifar10 = tf.keras.datasets.cifar10
+
+(x_train,y_train),(x_test,y_test) =cifar10.load_data()
+# etiketler vector olmalı yani tek boyuta sahip olmalı
+# etiketleri tek boyuta düsürüyoruz
+x_train, x_test = x_train/255.0 , x_test/255.0
+y_train, y_test  = y_train.flatten(),y_test.flatten()
+# resimlerin boyutu 50000,32,32,3 olmalı cıktı verecek
+# burada 50 bin ornek sayısı,Yani kac tane resim oldugu
+# 32,32 bir resmin boyutu
+# 3 ise resmin kanal sayısı ,rgb felan
+print("Resimlerin boyutu:", x_train.shape)
+print("Etikentlerin boyutu:", y_train.shape)
+
+---------------------------------------------
+
+# 3.jpg
+# burada verileri gorsellestiriyoruz
+# burada bir pencere ayarlıyoruz
+# sekilleri gostermek için
+# 30 ile 10 bunu boyutu
+fig =plt.figure(figsize=(30,10))
+# 75 tane resim gosterecegiz
+for i in range(75):
+    # bir cok sekil gösterecegi
+    # bu yüzden bunların nasıl konumlarda olacagını ayarlıyoruz
+    # 5 yatayı 15 ise dikeyi belirtiyor
+    # i+1 ise hangi seklin gösterilecegini belirtiyor
+    plt.subplot(5,15,i+1)
+    # resmin ekrana cizdiriyoruz
+    plt.imshow(x_train[i])
+    plt.axis("off")
+    
+plt.show()
+
+---------------------------------------------
+
+# 4.jpg
+model = tf.keras.models.Sequential([
+    # burada evrisim katmanı kullanıyoruz,genelde resimlerde kullanılır
+    # 64 filtre sayısı,3,3 evrisim yapan filtrenin boyutu
+    # aktivasyon fonksiyonu relu,input shape her bir resmin boyutu
+    tf.keras.layers.Conv2D(64,(3,3),activation="relu",input_shape=(32,32,3)),
+    # max pooling katmanı,kendisine verilen verileri 2*2 seklinde gruplayıp
+    # bu gruptaki en büyük elamanı alıp yeni bir veri olusturuyor
+    # kendisine verilen resim 30*30 boyutunda ise o bunu 15*15 yapar
+    tf.keras.layers.MaxPooling2D(2,2),
+    # filtre sayısı 128
+    tf.keras.layers.Conv2D(128,(3,3),activation="relu"),
+    tf.keras.layers.MaxPooling2D(2,2),
+    # filtre sayısı 256
+    tf.keras.layers.Conv2D(256,(3,3),activation="relu"),
+    tf.keras.layers.MaxPooling2D(2,2),
+    # veriyi düzlestirdik
+    tf.keras.layers.Flatten(),
+    # 512 nörona sahip bir katman
+    tf.keras.layers.Dense(512,activation="relu"),
+    # her bir epoch'ta bir önceki katmandaki(512 nöronlu olan) nöronların
+    # %20'sini rastgele iptal ediyoruz
+    tf.keras.layers.Dropout(0.2),
+    # son katman 10 nöron var cunku sınıf sayısı 10
+    tf.keras.layers.Dense(10,activation="softmax")
+])
+
+---------------------------------------------
+
+# 5.jpg
+# modeli detaylı sekilde gösteriyor
+# kac tane parametre oldugu yada katmanların cıkıs boyutları gibi bilgiler
+model.summary()
+
+---------------------------------------------
+
+
+# 5.jpg
+model.compile(optimizer="Adam",
+              loss="sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+
+---------------------------------------------
+
+
+# 5.jpg
+r=model.fit(x_train,y_train,validation_data=(x_test,y_test),epochs=2) #15 epoch yaptı hoca ama fazla uzun sürer diye 2 yaptım,
+
+---------------------------------------------
+
+
+# 5.jpg
+# modelin test verisi üstündeki basarısı
+model.evaluate(x_test,y_test)
+
+---------------------------------------------
+
+# 6.jpg
+# modelin loss degerinin zamana göre degisimi
+# ilki egitim verisi için
+# ikinci test verisi için
+plt.plot(r.history["loss"],label="Loss")
+plt.plot(r.history["val_loss"],label="Val_loss")
+plt.legend()
+
+
+---------------------------------------------
+
+
+
+# 6.jpg
+
+# modelin accuracy degerlerinin zamana göre degişimi
+# ilki egitim verisi için
+# ikinci test verisi için
+plt.plot(r.history["accuracy"],label="acc")
+plt.plot(r.history["val_accuracy"],label="val_acc")
+plt.legend()
+
+---------------------------------------------
+
+# 6.jpg
+
+# modele tüm test verisini verip her bir veri için tahmin alıyoruz
+y_predict=model.predict(x_test).argmax(axis=1)
+
+---------------------------------------------
+
+# 6.jpg
+# 0 ile 9999 arasındaki rastgele bir sayı olusturduk
+# 10000 tane test verisinde eleman var cünkü
+i=random.randint(0,9999)
+
+plt.imshow(x_test[i])
+plt.title("Gercek deger: %s Tahmin: %s" %  (y_test[i],y_predict[i]))
+
+"""
+epochs=2 yaptıgım için gercek deger ile tahmin bazen farklı cıkıyor, normalde epochs=15 yaptı hoca
+"""
